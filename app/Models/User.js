@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const Model = use('Model')
 
@@ -20,6 +20,10 @@ class User extends Model {
 
   productSelection () {
     return this.hasMany('App/Models/ProductSelection')
+  }
+
+  CleintFile () {
+    return this.hasOne('App/Models/CleintFile')
   }
 
   static get traits () {

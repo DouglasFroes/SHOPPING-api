@@ -1,70 +1,35 @@
 'use strict';
 
+const SelcProd = use('App/Models/ProductSelectio')
+
 class ProductSelectionController {
-  async index ({ request, response, view }) {}
+  async index ({ auth }) {
+    const selectspros = await SelcProd.query()
+      .where({ user_id: auth.user.id })
+      .with('product')
+      .fetch()
 
-  /**
-   * Render a form to be used for creating a new productselection.
-   * GET productselections/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {}
+    return selectspros
+  }
 
-  /**
-   * Create/save a new productselection.
-   * POST productselections
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store ({ request, response }) {}
+  async store ({ request, auth }) {
+    const data = request.only(['product_id'])
 
-  /**
-   * Display a single productselection.
-   * GET productselections/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+    const selecProd = await SelcProd.create({ ...data, user_id: auth.user.id })
+
+    return selecProd
+  }
+
   async show ({ params, request, response, view }) {}
 
-  /**
-   * Render a form to update an existing productselection.
-   * GET productselections/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {}
-
-  /**
-   * Update productselection details.
-   * PUT or PATCH productselections/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async update ({ params, request, response }) {}
 
-  /**
-   * Delete a productselection with id.
-   * DELETE productselections/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy ({ params, request, response }) {}
+  async destroy ({ params, auth }) {
+    const ps = await SelcProd.FindOrFail(params.id)
+    if (ps.user.id === auth.user.id) {
+      ps.delete()
+    }
+  }
 }
 
 module.exports = ProductSelectionController

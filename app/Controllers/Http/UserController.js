@@ -4,7 +4,7 @@ const User = use('App/Models/User')
 
 class StoreController {
   async index ({ request, response, view }) {
-    const users = User.query()
+    const users = await User.query()
       .with('roles')
       .with('permissions')
       .fetch()

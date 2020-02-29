@@ -16,7 +16,7 @@ class ProductSchema extends Schema {
       table
         .integer('category_id')
         .unsigned()
-        // .notNullable()
+        .notNullable()
         .references('id')
         .inTable('categories')
         .onUpdate('CASCADE')

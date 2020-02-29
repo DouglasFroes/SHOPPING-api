@@ -23,6 +23,10 @@ class Store extends Model {
     return this.hasMany('App/Models/Product')
   }
 
+  storeFile () {
+    return this.hasOne('App/Models/StoreFile')
+  }
+
   static get traits () {
     return [
       '@provider:Adonis/Acl/HasRole',

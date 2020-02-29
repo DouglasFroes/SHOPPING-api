@@ -2,6 +2,8 @@
 
 const Route = use('Route')
 
+Route.get('/', () => 'ola')
+
 Route.post('create/store', 'StoreController.store')
 
 Route.post('user', 'UserController.store')
@@ -26,4 +28,26 @@ Route.resource('category', 'CategoryController')
 
 Route.resource('product', 'ProductController')
   .apiOnly()
-  .middleware(['auth:store', 'is:(Moderator)'])
+  .except(['index'])
+  .middleware(['auth:store', 'is:(moderator)'])
+
+Route.get('product', 'ProductController.index').middleware(['auth'])
+
+Route.resource('addProduct', 'ProductSelectionController')
+  .apiOnly()
+  .middleware('auth')
+
+Route.post('files', 'FileController.store')
+Route.get('files/:id', 'FileController.show')
+
+Route.post('storeFile', 'StoreFileController.store').middleware(['auth:store'])
+Route.get('storeFile/:id', 'StoreFileController.show')
+
+Route.post('userFile', 'CleintFileController.store').middleware('auth')
+Route.get('userFile/:id', 'CleintFileController.show')
+Route.put('userFile/:id', 'CleintFileController.update').middleware('auth')
+
+Route.post('productFile/:id', 'ProductFileController.store').middleware([
+  'auth:store'
+])
+Route.get('productFile/:id', 'ProductFileController.show')

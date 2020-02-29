@@ -4,7 +4,10 @@ const Stores = use('App/Models/Store')
 
 class StoreController {
   async index ({ request, response, view }) {
-    const stores = await Stores.all()
+    const stores = await Stores.query()
+      .with('roles')
+      .with('storeFile')
+      .fetch()
 
     return stores
   }
