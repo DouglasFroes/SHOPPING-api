@@ -14,8 +14,10 @@ class StoreSchema extends Schema {
         .string('email', 254)
         .notNullable()
         .unique()
-      // table.integer('CNPJ', 8).notNullable()
-      // table.string('descripion', 600).notNullable()
+      table.string('password', 60).notNullable()
+
+      table.integer('CNPJ', 8)
+      table.string('descripion', 600)
       table.timestamps()
     })
   }
