@@ -1,5 +1,6 @@
 'use strict';
 const Stores = use('App/Models/Store')
+const User = use('App/Models/User')
 
 class SessionController {
   async StoresStore ({ request, response, auth }) {
@@ -8,12 +9,10 @@ class SessionController {
     const token = await auth.authenticator('store').attempt(email, password)
 
     if (token) {
-      const user = await Stores.query()
-        .where('email', email)
-        .fetch()
+      const { id, storeName } = await Stores.findByOrFail('email', email)
 
       return response.json({
-        user: user,
+        user: { id, storeName },
         token: token
       })
     }
@@ -25,12 +24,10 @@ class SessionController {
 
     const token = await auth.attempt(email, password)
     if (token) {
-      const user = await Stores.query()
-        .where('email', email)
-        .fetch()
+      const { id, username } = await User.findByOrFail('email', email)
 
       return response.json({
-        user: user,
+        user: { id, username },
         token: token
       })
     }
